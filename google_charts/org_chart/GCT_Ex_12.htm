@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>DETI Structure - Org Chart and Tree Map</title>
+    
+    <!-- Load the Google Charts library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script type="text/javascript">
+      // Load the necessary chart packages
+      google.charts.load('current', {packages:['orgchart', 'treemap']});
+      
+      // Set callbacks to draw both the Org Chart and Tree Map when loaded
+      google.charts.setOnLoadCallback(drawOrgChart);
+      google.charts.setOnLoadCallback(drawTreeMap);
+
+      // Function to draw the Org Chart
+      function drawOrgChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('string', 'Parent');
+        data.addColumn('string', 'ToolTip');
+
+        // Define the structure with tooltips showing number of persons
+        data.addRows([
+          [{v: 'DETI', f: 'DETI<div style="color:red; font-style:italic">549</div>'}, '', 'DETI: 549'],
+          [{v: 'Teaching', f: 'Teaching<div style="color:blue; font-style:italic">400</div>'}, 'DETI', 'Teaching: 400'],
+          [{v: 'Undergraduate', f: 'Undergraduate<div style="color:green; font-style:italic">200</div>'}, 'Teaching', 'Undergraduate: 200'],
+          [{v: 'Masters', f: 'Masters<div style="color:green; font-style:italic">200</div>'}, 'Teaching', 'Masters: 200'],
+          [{v: 'Research', f: 'Research<div style="color:blue; font-style:italic">149</div>'}, 'DETI', 'Research: 149'],
+          [{v: 'IEETA', f: 'IEETA<div style="color:purple; font-style:italic">87</div>'}, 'Research', 'IEETA: 87'],
+          [{v: 'IT', f: 'IT<div style="color:purple; font-style:italic">62</div>'}, 'Research', 'IT: 62']
+        ]);
+
+        // Create the Org Chart instance and draw it
+        var chart = new google.visualization.OrgChart(document.getElementById('orgchart_div'));
+        chart.draw(data, {'allowHtml': true});
+      }
+
+      // Function to draw the Tree Map
+      function drawTreeMap() {
+        var data = google.visualization.arrayToDataTable([
+          ['Group', 'Parent', 'Number of Persons'],
+          ['DETI', null, 549],            // Root
+          ['Teaching', 'DETI', 400],      // Teaching under DETI
+          ['Undergraduate', 'Teaching', 200],  // Undergraduate under Teaching
+          ['Masters', 'Teaching', 200],   // Masters under Teaching
+          ['Research', 'DETI', 149],      // Research under DETI
+          ['IEETA', 'Research', 87],      // IEETA under Research
+          ['IT', 'Research', 62]          // IT under Research
+        ]);
+
+        // Create the TreeMap instance and draw it
+        var tree = new google.visualization.TreeMap(document.getElementById('treemap_div'));
+
+        tree.draw(data, {
+          minColor: '#f00',         // Color for the smallest value
+          midColor: '#ddd',         // Intermediate color
+          maxColor: '#0d0',         // Color for the largest value
+          headerHeight: 15,         // Header height of each rectangle
+          fontColor: 'black',       // Font color inside the rectangles
+          showScale: true,          // Display the color scale
+          generateTooltip: showTooltip // Custom tooltips
+        });
+
+        // Custom tooltip function
+        function showTooltip(row, size, value) {
+          return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+                 data.getValue(row, 0) + '<br>' +
+                 'Number of Persons: ' + data.getValue(row, 2) + '</div>';
+        }
+      }
+    </script>
+
+    <style>
+      #orgchart_div, #treemap_div {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 20px;
+      }
+    </style>
+
+  </head>
+  
+  <body>
+    <h2>DETI Structure - Org Chart and Tree Map</h2>
+    
+    <!-- Div to hold the Org Chart -->
+    <div id="orgchart_div"></div>
+    
+    <!-- Div to hold the Tree Map -->
+    <div id="treemap_div"></div>
+  </body>
+</html>
