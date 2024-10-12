@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <!-- Path and text -->
+    <svg width="400" height="400">
+        <circle cx="100" cy="100" r="50" fill="red">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 100 100" to="360 100 100" dur="5s" repeatCount="indefinite"/>
+        </circle>
+        
+        <!-- Definindo um caminho para o texto contornar -->
+        <path id="circlePath" d="M 100,50 A 50,50 0 1,1 100,150 A 50,50 0 1,1 100,50" fill="none"/>
+
+        <!-- Texto seguindo o caminho do círculo -->
+        <text font-size="12" font-family="Arial">
+            <textPath href="#circlePath" startOffset="0%" method="align" spacing="auto">
+                is to graphic WHAT HTML is to text
+                <animate attributeName="startOffset" from="0%" to="100%" dur="10s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="10s" repeatCount="indefinite"/>
+            </textPath>
+        </text>
+        
+        <text x="80" y="110" font-size="20" font-family="Arial" fill="white">
+            SVG
+            <animate attributeName="font-size" values="10;20;10" dur="3s" repeatCount="indefinite"/>
+        </text>
+    </svg>
+
+</body>
+</html>
