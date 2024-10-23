@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body>
+    <div class="div_d3"></div> 
+
+    <!-- Add Sort Button -->
+    <button id="sort_button">Sort</button>
+
+    <script type="text/javascript">
+        // SVG width and height
+        let w = 500;
+        let h = 120;
+
+        // Dataset
+        let dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25];
+
+        // Create SVG element
+        let svg = d3.select("body").append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+        // Create bars
+        let rects = svg.selectAll("rect")
+            .data(dataset)
+            .join("rect")
+                .attr("x", (d, i) => i * (w / dataset.length))
+                .attr("y", d => h - (d * 4)) // Invert the y position
+                .attr("width", (w / dataset.length) - 1)
+                .attr("height", d => d * 4) // Scale bar height
+                .attr("fill", d => "rgb(0, 0, " + (d * 10) + ")")
+                .on("click", function(e, d) {
+                    console.log("The value is " + d);
+                });
+
+        // Add labels
+        let labels = svg.selectAll("text")
+            .data(dataset)
+            .join("text")
+                .text(d => d)
+                .attr("x", (d, i) => i * (w / dataset.length) + (w / dataset.length) / 2)
+                .attr("y", d => h - (d * 4) + 15) // Adjust for padding
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .attr("font-size", "10px");
+
+        // Define sort order flag
+        let sortOrder = false;
+
+        // Define sort function
+        let sortBars = function() {
+            // Flip value of sortOrder
+            sortOrder = !sortOrder;
+
+            // Sort the bars
+            svg.selectAll("rect")
+                .sort(function(a, b) {
+                    if (sortOrder) {
+                        return d3.ascending(a, b);
+                    } else {
+                        return d3.descending(a, b);
+                    }
+                })
+                .attr("x", (d, i) => i * (w / dataset.length));
+
+            // Sort the labels to match the bars
+            svg.selectAll("text")
+                .sort(function(a, b) {
+                    if (sortOrder) {
+                        return d3.ascending(a, b);
+                    } else {
+                        return d3.descending(a, b);
+                    }
+                })
+                .attr("x", (d, i) => i * (w / dataset.length) + (w / dataset.length) / 2);
+        };
+
+        // Add event listener to the sort button
+        d3.select("#sort_button").on("click", function() {
+            sortBars();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://d3js.org/d3.v6.js"></script>
+</head>
+
+<body>
+    <div class="div_d3"> </div> 
+
+    <script type="text/javascript">
+    let w = 1000;
+    let h = 500;
+
+    // Dataset
+    let dataset = [5, 10, 15, 20, 25, 30, 35]; // Extended dataset
+
+// Create SVG element
+let svg = d3.select("body").append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+// Create circles
+let circles = svg.selectAll("circle")
+    .data(dataset)
+    .join("circle")
+        .attr("cx", (d, i) => (i * 50) + 25) // Position circles evenly
+        .attr("cy", h / 2)
+        .attr("r", d => d) // Radius based on data
+        .attr("fill", d => "rgb(" + (d * 10) + ", 0, 100)") // Color based on data
+        .attr("stroke", "black") // Static stroke color
+        .attr("stroke-width", d => d / 2); // Stroke width is half the data value
+
+// Add a new circle
+svg.append("circle")
+    .attr("cx", 300)
+    .attr("cy", 150)
+    .attr("r", 50)
+    .attr("fill", "teal"); // Changed the color to teal
+    </script>
+</body>
+</html>

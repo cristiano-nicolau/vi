@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body>
+    <div class="div_d3"></div> 
+
+    <script type="text/javascript">
+        // SVG width and height
+        let w = 500;
+        let h = 120;
+
+        // Dataset
+        let dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25];
+
+        // Create SVG element
+        let svg = d3.select("body").append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+        // Create bars
+        svg.selectAll("rect")
+            .data(dataset)
+            .join("rect")
+                .attr("x", (d, i) => i * (w / dataset.length))
+                .attr("y", d => h - (d * 4)) // Invert the y position
+                .attr("width", (w / dataset.length) - 1)
+                .attr("height", d => d * 4) // Scale bar height
+                .attr("fill", d => "rgb(0, 0, " + (d * 10) + ")");
+
+        // Add labels
+        svg.selectAll("text")
+            .data(dataset)
+            .join("text")
+                .text(d => d)
+                .attr("x", (d, i) => i * (w / dataset.length) + (w / dataset.length) / 2)
+                .attr("y", d => h - (d * 4) + 15) // Adjust for padding
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .attr("font-size", "10px");
+    </script>
+</body>
+</html>
